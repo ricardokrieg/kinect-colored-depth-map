@@ -7,6 +7,7 @@ from openni import *
 import numpy
 import cv
 import sys
+import math
 
 XML_FILE = 'config.xml'
 MAX_DEPTH_SIZE = 10000
@@ -24,7 +25,10 @@ pygame.init()
 screen = pygame.display.set_mode((640, 480))
 depth_frame = pygame.Surface((640, 480))
 
-grayscale_palette = tuple([(i, i, i) for i in range(256)])
+norm = lambda x: min(max(int((x+1)*128),0),255)
+s = lambda t: math.sin(2*math.pi*t)
+spec = lambda t: (norm(s(t*0.9+0.2)), norm(s(t*0.9+0.9)), norm(s(t*0.9+0.5)))
+grayscale_palette = tuple(spec(x/256.) for x in range(256))
 
 pygame.display.set_caption('Kinect Colored Depth Map')
 
